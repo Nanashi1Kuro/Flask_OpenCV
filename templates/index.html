@@ -1,24 +1,330 @@
-{% extends "base.html" %}
-{% block title %}Главная{% endblock %}
+<!--
+   index.html
+   
+-->
 
-{% block header_1 %}
-    <h1>Главная</h1>
-{% endblock %}
+<html>
+  <head>
+   <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Live Stream  by Red_Panda_Project</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" />
+    <!-- MDB -->
+    <link rel="stylesheet" href="../static/css/mdb.min.css" />
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="../static/css/style.css" />
+  </head>
+  <body>
+    
+    <main class="my-5">
+    <div class="container">
+      <!--Section: Content-->
+      <section class="text-center">
+        <h4 class="mb-5"><strong>Live Stream  by Red_Panda_Project</strong></h4>
 
-{% block content_header_settings %}
-    <h3>Настройки</h3>
-{% endblock %}
+        <div class="row">
+          <div class="col-lg-4 col-md-12 mb-4">
+            <div class="card">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="../static/img/images.png" class="img-fluid" />
+                <a href="/calibration">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Калибровка</h5>
+                <p class="card-text">
+                  Вычисление коэффициентов дисторсии и матрицы камеры для определения положений объектов.
+                </p>
+                <a href="/calibration" class="btn btn-primary">Открыть</a>
+              </div>
+            </div>
+          </div>
 
-{% block content_settings %}
-    <p>Переключаясь между режимами, можно будет изменить параметры, и увидеть, что будет.</p>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="../static/img/images.png" class="img-fluid" />
+                <a href="/charact">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Характеристики камеры</h5>
+                <p class="card-text">
+                  FPS и прочие параметры.
+                </p>
+                <a href="/charact" class="btn btn-primary">Открыть</a>
+              </div>
+            </div>
+          </div>
 
-{% endblock %}
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="../static/img/images.png" class="img-fluid" />
+                <a href="/aruco">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Распознавание Aruco маркеров</h5>
+                <p class="card-text">
+                  Распознавание Aruco маркеров, выдление их на изображении и отрисовка осей XYZ маркера.
+                </p>
+                <a href="/aruco" class="btn btn-primary">Открыть</a>
+              </div>
+            </div>
+          </div>
+        </div>
 
-{% block content_header_video %}
-    <h3>Видео</h3>
-{% endblock %}
+        <div class="row">
+          <div class="col-lg-4 col-md-12 mb-4">
+            <div class="card">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="../static/img/images.png" class="img-fluid" />
+                <a href="/color_detect">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Распознавание объектов по цвету</h5>
+                <p class="card-text">
+                  Выделение объектов определеннго цвета на изображении.
+                </p>
+                <a href="/color_detect" class="btn btn-primary">Открыть</a>
+              </div>
+            </div>
+          </div>
 
-{% block content_video %}
-    <image src="{{ url_for('video_feed')}}" width="100%"></image>
-{#            url_for('video_feed')#}
-{% endblock %}
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="../static/img/images.png" class="img-fluid" />
+                <a href="/size_detect">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Определение площади контура</h5>
+                <p class="card-text">
+                  Выделение контура объекта и вычисление его площади.
+                </p>
+                <a href="/size_detect" class="btn btn-primary">Открыть</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="../static/img/images.png" class="img-fluid" />
+                <a href="/white_balance">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Настройки фильтра белого</h5>
+                <p class="card-text">
+                  Настройка фильтрации белого цвета на изображении.
+                </p>
+                <a href="/white_balance" class="btn btn-primary">Открыть</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-lg-4 col-md-12 mb-4">
+            <div class="card">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="../static/img/images.png" class="img-fluid" />
+                <a href="/exposition">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Настройки экспозиции</h5>
+                <p class="card-text">
+                  Настройка экспозиции камеры.
+                </p>
+                <a href="/exposition" class="btn btn-primary">Открыть</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="../static/img/images.png" class="img-fluid" />
+                <a href="/roundness">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Округлость контура</h5>
+                <p class="card-text">
+                  Вычислегние округлости найденного контура.
+                </p>
+                <a href="/roundness" class="btn btn-primary">Открыть</a>
+              </div>
+            </div>
+          </div>  
+         
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="../static/img/images.png" class="img-fluid" />
+                <a href="/detect_dist">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Определение местоположения объекта</h5>
+                <p class="card-text">
+                  Вычисление местоположения объектов относительно друг друга.
+                </p>
+                <a href="/detect_dist" class="btn btn-primary">Открыть</a>
+              </div>
+            </div>
+          </div>
+        </div>   
+        
+        <div class="row">
+          <div class="col-lg-4 col-md-12 mb-4">
+            <div class="card">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="../static/img/images.png" class="img-fluid" />
+                <a href="/shape_classification">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Распознавание фигур</h5>
+                <p class="card-text">
+                  Определение типа фигуры (квадрат, треугольник, круг) и ее размеров.
+                </p>
+                <a href="/shape_classification" class="btn btn-primary">Открыть</a>
+              </div>
+            </div>
+          </div>  
+         
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="../static/img/images.png" class="img-fluid" />
+                <a href="/line_detect">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Распознавание линий</h5>
+                <p class="card-text">
+                  Распознавание линий и определение их параметров.
+                </p>
+                <a href="/line_detect" class="btn btn-primary">Открыть</a>
+              </div>
+            </div>
+          </div>  
+
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="../static/img/images.png" class="img-fluid" />
+                <a href="/ssd">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Распознавание нейронной сетью</h5>
+                <p class="card-text">
+                  Распознавание объектов с помощью нейронной сети SSD MobileNet.
+                </p>
+                <a href="/ssd" class="btn btn-primary">Открыть</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4 col-md-12 mb-4">
+            <div class="card">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="../static/img/images.png" class="img-fluid" />
+                <a href="/FPV">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">FPV</h5>
+                <p class="card-text">
+                  Управление от первого лица с использовнием джойстика.
+                </p>
+                <a href="/FPV" class="btn btn-primary">Открыть</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="../static/img/images.png" class="img-fluid" />
+                <a href="/track">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Слежение</h5>
+                <p class="card-text">
+                  С помощью настроек определяет предмет для слежения.
+                </p>
+                <a href="/track" class="btn btn-primary">Открыть</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="../static/img/images.png" class="img-fluid" />
+                <a href="/ssd">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Дополнительная реальность</h5>
+                <p class="card-text">
+                  Распознавание qr кодов и вывод информации о продукции.
+                </p>
+                <a href="/ssd" class="btn btn-primary">Открыть</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+      <!--Section: Content-->
+    </div>
+  </main>
+  <!--Main layout-->
+
+  <!--Footer-->
+  <footer class="bg-light text-lg-start">
+
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2023 Developed by Red_Panda_Project
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!--Footer-->
+    <!-- MDB -->
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+    <!-- Custom scripts -->
+    <script type="text/javascript" src="js/script.js"></script>
+  </body>
+</html>

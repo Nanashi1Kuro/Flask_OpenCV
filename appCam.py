@@ -6,20 +6,7 @@ import numpy as np
 import cv2
 import time
 import serial
-from color_detect import color_detect
-from size_detect import size_detect
-from camCalibration import calibrationCam
-from shape_detection_gray import shape_call
-from white_balance_detect import white_balancing
-from roundless import round_contr
-from location_object import detect_distance_between_obj
-from aruco_detect import detect
-from charctiristic import character, check_CPU_temp, check_RAM_usage, check_CPU_usage
-from line_detect import lineDet
-from exposition import exp
-from ssd_mobilenet import ssd
-from For_serial import _map
-from track_with_line import track_ob
+
 
 app = Flask(__name__)
 
@@ -71,8 +58,6 @@ SMAX = 255
 VMAX = 255
 AREA = 500
 
-LIMUN = 2
-
 if not camera.isOpened():
     print("Камера не запущена")
     exit()
@@ -84,7 +69,7 @@ def index():
         running_calibration, running_shape, running_white, \
         running_roundness, running_detect_obj, running_aruco, \
         running_characteristic, running_detect_line, running_exp, running_ssd, running_FPV, running_tracking
-    running_video = True
+    running_video = False
     running_color = False
     running_size = False
     running_calibration = False
@@ -102,32 +87,6 @@ def index():
     """Video streaming home page."""
     return render_template('index.html')
 
-@app.route('/setvariable')
-def set_variable():
-    global running_video, running_color, running_size, \
-        running_calibration, running_shape, running_white, \
-        running_roundness, running_detect_obj, running_aruco, \
-        running_characteristic, running_detect_line, running_exp, running_ssd, running_FPV, running_tracking, \
-        blur, sharp, noise, white_balance
-    running_video = True
-    running_color = False
-    running_size = False
-    running_calibration = False
-    running_shape = False
-    running_white = False
-    running_roundness = False
-    running_detect_obj = False
-    running_aruco = False
-    running_characteristic = False
-    running_detect_line = False
-    running_exp = False
-    running_ssd = False
-    running_FPV = False
-    running_tracking = False
-
-    my_variable = request.args.get('data')
-
-    return blur, sharp, noise, white_balance
 
 @app.route("/color_detect", methods=['GET', 'POST'])
 def color_detect_page():
@@ -168,7 +127,7 @@ def color_detect_page():
     running_FPV = False
     running_tracking = False
     """Video streaming generator function."""
-    return render_template('page_def_of_color.html')
+    return render_template('color.html')
 
 
 @app.route('/size_detect', methods=['GET', 'POST'])
@@ -210,7 +169,7 @@ def size_detect_page():
     running_FPV = False
     running_tracking = False
     """Video streaming generator function."""
-    return render_template('page_s_kontur.html')
+    return render_template('size_sq.html')
 
 
 @app.route('/calibration', methods=['GET', 'POST'])
@@ -238,7 +197,7 @@ def calibration():
         if request.form['calibration_button'] == 'Calibration':
             pass
     elif request.method == 'GET':
-        return render_template('page_calibration.html')
+        return render_template('calibration.html')
 
 
 @app.route('/shape_classification', methods=['GET', 'POST'])
@@ -278,7 +237,7 @@ def shape_detect():
     running_ssd = False
     running_FPV = False
     running_tracking = False
-    return render_template('page_figures.html')
+    return render_template('shape_detect.html')
 
 
 @app.route('/white_balance', methods=['GET', 'POST'])
@@ -306,7 +265,7 @@ def white_balance_page():
     running_ssd = False
     running_FPV = False
     running_tracking = False
-    return render_template('page_bwhite.html', val=white_balance)
+    return render_template('white_balance.html', val=white_balance)
 
 
 @app.route('/roundness', methods=['GET', 'POST'])
@@ -346,7 +305,7 @@ def roundness():
     running_ssd = False
     running_FPV = False
     running_tracking = False
-    return render_template('page_round_kontur.html')
+    return render_template('round_detect.html')
 
 
 @app.route('/detect_dist', methods=['GET', 'POST'])
@@ -386,7 +345,7 @@ def detect_destination():
     running_ssd = False
     running_FPV = False
     running_tracking = False
-    return render_template('page_where_object.html')
+    return render_template('detect_distance_between_obj.html')
 
 
 @app.route('/aruco')
@@ -410,7 +369,7 @@ def aruco():
     running_ssd = False
     running_FPV = False
     running_tracking = False
-    return render_template('page_aruko_markers.html')
+    return render_template('aruco.html')
 
 
 @app.route('/charact')
@@ -437,22 +396,29 @@ def charact():
     cpu_temp = check_CPU_temp()
     cpu_usage = check_CPU_usage()
     ram_usage = check_RAM_usage()
-    return render_template('page_chars_of_camera.html', cpu_temp=cpu_temp, cpu_usage=cpu_usage, ram_usage=ram_usage)
+    return render_template('charac.html', cpu_temp=cpu_temp, cpu_usage=cpu_usage, ram_usage=ram_usage)
 
 
 @app.route('/send', methods=['GET', 'POST'])
 def send():
     try:
         # Set predefined commands here, only commands in this list can be executed
-        if (request.form['command']):
-            stdout, stderr = subprocess.getstatusoutput(request.form['command'])
+        if (request.form['command'] == "dmesg"):
+            stdout, stderr = subprocess.Popen(["dmesg"], stderr=subprocess.PIPE,
+                                              stdout=subprocess.PIPE).communicate()
+
+        elif (request.form['command'] == "ls"):
+            stdout, stderr = subprocess.Popen(
+                ["ls", "-la", quote(request.form['data']) if request.form['data'] else './'],
+                stderr=subprocess.PIPE, stdout=subprocess.PIPE).communicate()
+
         else:
             stdout, stderr = (b"command not found", b"")
 
         data = {}
         data['command'] = request.form['command']
         data['data'] = request.form['data']
-        data['result'] = stdout + "\n" + stderr
+        data['result'] = stdout.decode('utf-8') + "\n" + stderr.decode('utf-8')
         return (json.dumps(data))
 
     except Exception as e:
@@ -465,7 +431,7 @@ def line_detect():
         running_calibration, running_shape, running_white, \
         running_roundness, running_detect_obj, running_aruco, \
         running_characteristic, running_detect_line, running_exp, running_ssd, running_tracking, \
-        HMIN, SMIN, VMIN, HMAX, SMAX, VMAX, AREA, running_FPV, LIMUN
+        HMIN, SMIN, VMIN, HMAX, SMAX, VMAX, AREA, running_FPV
     if request.method == 'POST':
         if (request.json.get("H_max") is not None):
             HMAX = request.json.get("H_max")
@@ -481,8 +447,6 @@ def line_detect():
             VMIN = request.json.get("V_min")
         if (request.json.get("Area") is not None):
             AREA = request.json.get("Area")
-        if (request.json.get("Luminous") is not None):
-            LIMUN = request.json.get("Luminous")
     running_video = False
     running_color = False
     running_size = False
@@ -498,7 +462,7 @@ def line_detect():
     running_ssd = False
     running_FPV = False
     running_tracking = False
-    return render_template('page_lines.html', val8 = LIMUN)
+    return render_template('line_detect.html')
 
 
 @app.route('/exposition', methods=['GET', 'POST'])
@@ -507,7 +471,7 @@ def expos():
         running_calibration, running_shape, running_white, \
         running_roundness, running_detect_obj, running_aruco, \
         running_characteristic, running_detect_line, running_exp, running_ssd, running_FPV, running_tracking, \
-        blur, sharp, noise, white_balance
+        blur, sharp, noise
     if request.method == 'POST':
         # if request.form.get('Submit') == 'Submit':
         #    blur = int(request.form["slider1"])
@@ -522,8 +486,6 @@ def expos():
         if (request.json.get("noise") is not None):
             noise = request.json.get("noise")
             # print(noise)
-        if (request.json.get("white_balance") is not None):
-            white_balance = request.json.get("white_balance")
     running_video = False
     running_color = False
     running_size = False
@@ -539,7 +501,7 @@ def expos():
     running_ssd = False
     running_FPV = False
     running_tracking = False
-    return render_template('page_expo.html', val1=blur, val2=sharp, val3=noise, val4=white_balance)
+    return render_template('exposition.html', val1=blur, val2=sharp, val3=noise)
 
 
 @app.route('/ssd')
@@ -564,7 +526,7 @@ def ssd_webpage():
     running_ssd = True
     running_FPV = False
     running_tracking = False
-    return render_template('page_recog_ai.html')
+    return render_template('ssd.html')
 
 
 @app.route('/sendFPV', methods=['GET', 'POST'])
@@ -608,7 +570,7 @@ def control_FPV():
     running_ssd = False
     running_FPV = True
     running_tracking = False
-    return render_template("page_fpv_from_face.html")
+    return render_template("FPV.html")
 
 
 @app.route('/track')
@@ -633,7 +595,7 @@ def tracking():
     running_ssd = False
     running_FPV = False
     running_tracking = True
-    return render_template("page_tracking.html")
+    return render_template("tracking.html")
 
 
 def gen_white_balance(camera):
@@ -680,8 +642,8 @@ def gen_color_detect(camera):
         if not ret:
             print("Can't receive frame (stream end?). Exiting ...")
             break
-        #frame = white_balancing(frame, white_balance)
-        #frame = exp(frame, blur, sharp, noise)
+        frame = white_balancing(frame, white_balance)
+        frame = exp(frame, blur, sharp, noise)
         frame = color_detect(frame, HMIN, SMIN, VMIN, HMAX, SMAX, VMAX, AREA)
         _, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
@@ -813,7 +775,7 @@ def gen_charac(camera):
 
 
 def gen_line_detect(camera):
-    global running_detect_line, HMIN, SMIN, VMIN, HMAX, SMAX, VMAX, AREA, LIMUN
+    global running_detect_line, HMIN, SMIN, VMIN, HMAX, SMAX, VMAX, AREA
     """Video streaming generator function."""
     while running_detect_line:
         ret, frame = camera.read()
@@ -823,7 +785,7 @@ def gen_line_detect(camera):
             break
         frame = white_balancing(frame, white_balance)
         frame = exp(frame, blur, sharp, noise)
-        frame = lineDet(frame, HMIN, SMIN, VMIN, HMAX, SMAX, VMAX, AREA, LIMUN)
+        frame = lineDet(frame, HMIN, SMIN, VMIN, HMAX, SMAX, VMAX, AREA)
         _, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
         yield (b'--frame\r\n'
@@ -934,7 +896,7 @@ def video_feed_roundness_detect():
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-@app.route('/video_feed_detect_distance_between_obj')
+@app.route('/video_feed_tdetect_distance_between_obj')
 def video_feed_detect_distance_between_obj():
     """Video streaming route. Put this in the src attribute of an img tag."""
     return Response(gen_detect_distance_between_obj(camera),

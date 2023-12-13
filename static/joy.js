@@ -129,14 +129,12 @@ var JoyStick = (function(container, parameters)
 			if(canvas.offsetParent.tagName.toUpperCase() === "BODY")
 			{
 				movedX -= canvas.offsetLeft;
-				console.log("blya");
 				movedY -= canvas.offsetTop;
 			}
 			else
 			{
 				movedX -= canvas.offsetParent.offsetLeft;
 				movedY -= canvas.offsetParent.offsetTop;
-				console.log("mraz");
 			}
 			// Delete canvas
 			context.clearRect(0, 0, canvas.width, canvas.height);
