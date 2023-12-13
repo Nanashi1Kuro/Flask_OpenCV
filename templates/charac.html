@@ -1,0 +1,77 @@
+<html>
+   <head>
+      <title>Live Stream  by Red_Panda_Project</title>
+      <link rel="stylesheet" href='../static/style.css'/>
+      <style>
+         body {
+         margin: 0;
+         display: flex;
+         flex-flow: column;
+         flex-direction: column;
+         width: 100%;
+         }
+         pre {
+         white-space: pre-wrap;       /* css-3 */
+         white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+         white-space: -pre-wrap;      /* Opera 4-6 */
+         white-space: -o-pre-wrap;    /* Opera 7 */
+         word-wrap: break-word;       /* Internet Explorer 5.5+ */
+         }
+         .result_block {
+         display: inline-block;
+         height: 80vh;
+         overflow: auto;
+         width: 100%;
+         background-color: black;
+         color: white;
+         flex-grow: 1;
+         flex: 1 1 auto;
+         }
+         .container {
+         display: flex;
+         flex-direction: column;
+         height: 100vh;
+         }
+         .command_block{
+         background-color: rgba(255, 255, 0, 0);
+         flex: 0 1 auto;
+         padding: 10px;
+         }
+         .column {
+         float: left;
+         width: 50%;
+         }
+         /* Clear floats after the columns */
+         .row:after {
+         content: "";
+         display: table;
+         clear: both;
+         }
+      </style>
+   </head>
+   <body>
+      <h1>Live Stream  by Red_Panda_Project</h1>
+      <div class="row">
+         <div class="column">
+            <img src="{{ url_for('video_feed_charac') }}" width="50%">
+         </div>
+         <div class="column">
+            <ul id="stats">
+               <li>CPU Temperature: {{cpu_temp}} C</li>
+               <li>CPU Usage {{cpu_usage}} %</li>
+               <li>RAM Usage {{ram_usage}} of 512 MB</li>
+            </ul>
+         </div>
+      </div>
+      <hr>
+      <p> @2023 Developed by Red_Panda_Project</p>
+       <iframe src="http://192.168.36.50:8888/" height="500" title="console"></iframe> 
+      <!--
+      <div class="container">
+         
+      </div>
+      -->
+   </body>
+
+</html>
+
