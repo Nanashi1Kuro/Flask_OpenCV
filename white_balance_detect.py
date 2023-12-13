@@ -14,8 +14,8 @@ def white_balancing(image,val):
     gamma = val  # change the value here to get different result
     if not val == 0:
         adjusted = adjust_gamma(original, gamma=gamma)
-        cv2.putText(adjusted, "g={}".format(gamma), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 3)
+        #cv2.putText(adjusted, "g={}".format(gamma), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 3)
         return adjusted
     else:
-        cv2.putText(original, "g={}".format(gamma), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 3)
+        #cv2.putText(original, "g={}".format(gamma), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 3)
         return original

@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 
 def color_detect(frame,HMIN,SMIN,VMIN,HMAX,SMAX,VMAX, AREA):
-    hsvFrame = frame #cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    hsvFrame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     
     lower_range = np.array([HMIN,SMIN,VMIN])
     upper_range = np.array([HMAX,SMAX,VMAX])
@@ -14,43 +14,43 @@ def color_detect(frame,HMIN,SMIN,VMIN,HMAX,SMAX,VMAX, AREA):
 
     # Set range for red color and
     # define mask
-    red_lower = np.array([136, 87, 111], np.uint8)
-    red_upper = np.array([180, 255, 255], np.uint8)
+    red_lower = np.array([22, 179, 136], np.uint8)
+    red_upper = np.array([179, 238, 255], np.uint8)
     red_mask = cv2.inRange(hsvFrame, red_lower, red_upper)
-    red_mask = red_mask + hsvmask
-    
+    #red_mask = red_mask + hsvmask
+
     # Set range for green color and
     # define mask
-    green_lower = np.array([25, 52, 72], np.uint8)
-    green_upper = np.array([102, 255, 255], np.uint8)
+    green_lower = np.array([62, 50, 77], np.uint8)
+    green_upper = np.array([113, 255, 178], np.uint8)
     green_mask = cv2.inRange(hsvFrame, green_lower, green_upper)
-    green_mask = green_mask + hsvmask
+    #green_mask = green_mask + hsvmask
 
     # Set range for blue color and
     # define mask
-    blue_lower = np.array([94, 80, 2], np.uint8)
-    blue_upper = np.array([120, 255, 255], np.uint8)
+    blue_lower = np.array([104, 99, 124], np.uint8)
+    blue_upper = np.array([135, 255, 255], np.uint8)
     blue_mask = cv2.inRange(hsvFrame, blue_lower, blue_upper)
-    blue_mask = green_mask + hsvmask
+    #blue_mask = green_mask + hsvmask
 
     # Morphological Transform, Dilation
     # for each color and bitwise_and operator
     # between imageFrame and mask determines
     # to detect only that particular color
-    kernel = np.ones((5, 5), "uint8")
+    #kernel = np.ones((15, 15), "uint8")
 
     # For red color
-    red_mask = cv2.dilate(red_mask, kernel)
+    #red_mask = cv2.dilate(red_mask, kernel)
     res_red = cv2.bitwise_and(frame, frame,
                               mask=red_mask)
 
     # For green color
-    green_mask = cv2.dilate(green_mask, kernel)
+    #green_mask = cv2.dilate(green_mask, kernel)
     res_green = cv2.bitwise_and(frame, frame,
                                 mask=green_mask)
 
     # For blue color
-    blue_mask = cv2.dilate(blue_mask, kernel)
+    #blue_mask = cv2.dilate(blue_mask, kernel)
     res_blue = cv2.bitwise_and(frame, frame,
                                mask=blue_mask)
 
@@ -61,7 +61,7 @@ def color_detect(frame,HMIN,SMIN,VMIN,HMAX,SMAX,VMAX, AREA):
 
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
-        if (area < 40000) and (area > 300):
+        if (area < AREA) and (area > 500):
             x, y, w, h = cv2.boundingRect(contour)
             frame = cv2.rectangle(frame, (x, y),
                                        (x + w, y + h),
@@ -78,7 +78,7 @@ def color_detect(frame,HMIN,SMIN,VMIN,HMAX,SMAX,VMAX, AREA):
 
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
-        if (area < 40000) and (area > 200):
+        if (area < AREA) and (area > 500):
             x, y, w, h = cv2.boundingRect(contour)
             frame = cv2.rectangle(frame, (x, y),
                                        (x + w, y + h),
@@ -94,7 +94,7 @@ def color_detect(frame,HMIN,SMIN,VMIN,HMAX,SMAX,VMAX, AREA):
                                            cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
-        if (area < 40000) and (area > 200):
+        if (area < AREA) and (area > 500):
             x, y, w, h = cv2.boundingRect(contour)
             frame = cv2.rectangle(frame, (x, y),
                                        (x + w, y + h),

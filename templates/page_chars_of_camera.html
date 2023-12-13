@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Характеристики камеры{% endblock %}
+
+{% block header_1 %}
+    <h1>Характеристики камеры</h1>
+{% endblock %}
+
+{% block content_header_settings %}
+    <h3>Настройки</h3>
+{% endblock %}
+
+{% block content_settings %}
+    <p>CPU Temperature: {{cpu_temp}} C</p>
+    <p>CPU Usage {{cpu_usage}} %</p>
+    <p>RAM Usage {{ram_usage}} of 512 MB</p>
+{% endblock %}
+
+{% block content_header_video %}
+    <h3>Видео</h3>
+{% endblock %}
+
+{% block content_video %}
+    <image src="{{ url_for('video_feed_charac') }}" width="100%">
+    <div class="container">
+      <div class="command_block">
+        <form id="exec" name="exec" method="POST" role="form">
+          <input id="command" name="command" type="text" class="command" placeholder="Command"/>
+          <input id="data" name="data" type="text" class="data" placeholder="Data"/>
+          <input id="exec_submit" value="Execute" type="button"/>
+        </form>
+      </div>
+      <div class="result_block"></div>
+    </div>
+
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script type="text/javascript">
+  $( document ).ready(function() {
+
+      $(function(){
+          $('#exec_submit').on('click', function(event) {
+
+
+              $.ajax({
+                  url: '/send',
+                  data: $('form').serialize(),
+                  type: 'POST',
+                  success: function(response){
+                      var msg = $.parseJSON(response);
+                      $('div.result_block').append( '<div><b style="color:red"><pre>> '+msg['command'] + ' ' + msg['data'] + '</b><br>' + msg['result'] + '\n</pre></div>' );
+                      $('div.result_block').animate({ scrollTop: $('div.result_block')[0].scrollHeight}, 1000); // emulate autoscroll effect
+                  },
+                  error: function(error){
+                      console.log(error);
+                  }
+              });
+          });
+      });
+  });
+  </script>
+{#            url_for('video_feed_calibration')#}
+{% endblock %}

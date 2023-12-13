@@ -2,11 +2,11 @@ import cv2
 import numpy as np
 import pickle
 
-def calibrationCam(image, FPS, width, height):
-
+def calibrationCam(frame, FPS, width, height):
+    image = frame
     CHECKERBOARD = (9, 6)
     MIN_POINTS = 50
-    RECORD = True
+    #RECORD = True
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
     # Vector for the 3D points:
     threedpoints = []
@@ -15,8 +15,8 @@ def calibrationCam(image, FPS, width, height):
     # 3D points real world coordinates:
     objectp3d = np.zeros((1, CHECKERBOARD[0] * CHECKERBOARD[1], 3), np.float32)
     objectp3d[0, :, :2] = np.mgrid[0:CHECKERBOARD[0], 0:CHECKERBOARD[1]].T.reshape(-1, 2)
-    if RECORD:
-        writer = cv2.VideoWriter('calibration.mp4', cv2.VideoWriter_fourcc(*'DIVX'), FPS, (width, height))
+    #if RECORD:
+    #    writer = cv2.VideoWriter('calibration.mp4', cv2.VideoWriter_fourcc(*'DIVX'), FPS, (width, height))
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     ret, corners = cv2.findChessboardCorners(gray, CHECKERBOARD,
@@ -30,11 +30,11 @@ def calibrationCam(image, FPS, width, height):
                 gray, corners, CHECKERBOARD, (-1, -1), criteria)
         twodpoints.append(corners2)
             # When we have minimum number of data points, stop:
-        if len(twodpoints) > MIN_POINTS:
-            if RECORD: writer.release()
+        #if len(twodpoints) > MIN_POINTS:
+            #if RECORD: writer.release()
         image = cv2.drawChessboardCorners(image,CHECKERBOARD,corners2, ret)
-        if RECORD:
-            writer.write(image)
+        #if RECORD:
+        #    writer.write(image)
     if len(threedpoints) > 0:
         h, w = image.shape[:2]
         ret, matrix, distortion, r_vecs, t_vecs = cv2.calibrateCamera(threedpoints, twodpoints, gray.shape[::-1], None, None)

@@ -1,11 +1,55 @@
 
 import cv2
 import numpy as np
+from scipy.spatial import distance as dist
 
 
-def lineDet(img,HMIN,SMIN,VMIN,HMAX,SMAX,VMAX, AREA):
-    img = cv2.imread("shapes.jpg")
+def midpoint(ptA, ptB):
+    return ((ptA[0] + ptB[0]) * 0.5, (ptA[1] + ptB[1]) * 0.5)
+
+def getCurvature(contour, stride=1):
+    curvature = []
+    assert stride < len(contour), "stride must be shorther than length of contour"
+
+    for i in range(len(contour)):
+        before = i - stride + len(contour) if i - stride < 0 else i - stride
+        after = i + stride - len(contour) if i + stride >= len(contour) else i + stride
+
+        f1x, f1y = (contour[after] - contour[before]) / stride
+        f2x, f2y = (contour[after] - 2 * contour[i] + contour[before]) / stride ** 2
+        denominator = (f1x ** 2 + f1y ** 2) ** 3 + 1e-11
+
+        curvature_at_i = np.sqrt(4 * (f2y * f1x - f2x * f1y) ** 2 / denominator) if denominator > 1e-12 else -1
+
+        curvature.append(curvature_at_i)
+
+
+    return curvature
+
+def val_contrast(img, LIMUN):
+    # converting to LAB color space
+    if LIMUN == 0:
+        return img
+    lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+    l_channel, a, b = cv2.split(lab)
+
+    # Applying CLAHE to L-channel
+    # feel free to try different values for the limit and grid size:
+    clahe = cv2.createCLAHE(LIMUN, tileGridSize=(8, 8))
+    cl = clahe.apply(l_channel)
+
+    # merge the CLAHE enhanced L-channel with the a and b channel
+    limg = cv2.merge((cl, a, b))
+
+    # Converting image from LAB Color model to BGR color spcae
+    enhanced_img = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
+
+    return enhanced_img
+
+def lineDet(img,HMIN,SMIN,VMIN,HMAX,SMAX,VMAX, AREA, LIMUN):
+    #img = cv2.imread("shapes.jpg")
     #gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img = val_contrast(img, LIMUN)
     lower_range = np.array([HMIN,SMIN,VMIN])
     upper_range = np.array([HMAX,SMAX,VMAX])
     hsv = img #cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -57,25 +101,32 @@ def lineDet(img,HMIN,SMIN,VMIN,HMAX,SMAX,VMAX, AREA):
             # drawn. In this case, it is red.
             cv2.line(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
 
-        contours, _ = cv2.findContours(edges, cv2.RETR_TREE,
+        contours, _ = cv2.findContours(gray, cv2.RETR_TREE,
                                        cv2.CHAIN_APPROX_SIMPLE)
         for cnt in contours:
-
-            # take the first contour
-            count = cnt
-            area = cv2.contourArea(count)
-            if (area < 100000) and (area > 200):
-                M = cv2.moments(count)
-                ((x_axis, y_axis), radius) = cv2.minEnclosingCircle(count)
-
-                center = (int(x_axis), int(y_axis))
-                radius = int(radius)
-                cv2.putText(img, radius, (150, 150), cv2.FONT_HERSHEY_COMPLEX,
-                            1.0, (0, 255, 0))
-                cv2.drawContours(img, cnt, -1, (255, 255, 0), 2)
+            area = cv2.contourArea(cnt)
+            if (area < AREA) and (area > 1000):
+                approx = cv2.approxPolyDP(cnt, 0.01 * cv2.arcLength(cnt, True), True)
+                if len(approx) > 10:
+                    M = cv2.moments(cnt)
+                    ((x_axis, y_axis), radius) = cv2.minEnclosingCircle(cnt)
+                    center = (int(x_axis), int(y_axis))
+                    radius = int(radius)
+                    xA = int(M["m10"] / M["m00"])
+                    yA = int(M["m01"] / M["m00"])
+                    xB = 300
+                    yB = 300
+                    cv2.putText(img, str(radius), center, cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
+                    cv2.drawContours(img, [cnt], 0, (0, 0, 0), 2)
+                    D = (dist.euclidean((xA, yA), (xB, yB)) / 300)
+                    (mX, mY) = midpoint((xA, yA), (xB, yB))
+                    cv2.putText(img, "{:.1f}".format(D), (int(mX), int(mY - 10)),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 0, 0), 2)
 
     except Exception as e:
         pass
 
     return img
+
+
 

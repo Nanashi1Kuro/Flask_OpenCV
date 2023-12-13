@@ -44,3 +44,5 @@ def check_RAM_usage():
     
 def check_CPU_usage():
     return psutil.cpu_percent(4)
+
+
