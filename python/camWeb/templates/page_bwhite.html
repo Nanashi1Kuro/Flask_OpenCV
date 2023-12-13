@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Баланс белого{% endblock %}
+
+{% block header_1 %}
+    <h1>Баланс белого</h1>
+{% endblock %}
+
+{% block content_header_settings %}
+
+{% endblock %}
+
+{% block content_settings %}
+    <div class="container">
+
+		<div class="slider-container">
+			<div>
+				<p class="slider-title">Баланс белого</p>
+				<input type="range" min="0" max="5" value="{{val}}" class="slider" name="slider1" id="slider1">
+				<p class="slider-value" id="slider1-value">{{val}}</p>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// Get the slider and its value element
+		let slider1 = document.getElementById("slider1");
+		let slider1Value = document.getElementById("slider1-value");
+
+
+		// Update the slider value element when the slider is moved
+		slider1.addEventListener("input", function() {
+			slider1Value.innerHTML = this.value;
+			fetch("/white_balance", {
+            method: "POST",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              val: Number(this.value)
+            })
+            })
+		});
+
+	</script>
+
+{% endblock %}
+
+{% block content_header_video %}
+
+{% endblock %}
+
+{% block content_video %}
+    <image src="{{ url_for('video_feed_white_balance') }}" width="100%">
+{#            url_for('video_feed_calibration')#}
+{% endblock %}

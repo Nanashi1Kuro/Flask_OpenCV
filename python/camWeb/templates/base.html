@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Machine vision</title>
+        <link href="{{ url_for('static', filename='bootstrap.min.css')}}" rel="stylesheet" >
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.rtl.min.css')}}" >
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}">
+    </head>
+
+    <body style="background:#ffff">
+
+        <div id="header" style="background:#8dcc90">
+
+            <div id="logospace fixed-top">
+                 <nav class="navbar bg-body-tertiary">
+{#            <div class="container">#}
+{#                <a class="navbar-brand " href="#">#}
+                    <a href="/"><image src="{{ url_for('static', filename='/images/mes_logo.svg') }}" alt="Bootstrap" width="264" height="70"></a>
+{#                </a>#}
+{#            </div>#}
+                 </nav>
+            </div>
+
+            <div id="menu fixed-top">
+                <nav class="navbar bg-body-tertiary start">
+                  <div class="container-fluid">
+        {#            <a class="navbar-brand" href="#">Offcanvas navbar</a>#}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                          <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                      <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Меню</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                      </div>
+                      <div class="offcanvas-body">
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                          <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/">Главная</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="/calibration">Калибровка</a>
+                              <a class="nav-link" href="/charact">Характеристики камеры</a>
+                              <a class="nav-link" href="/aruco">Определение аруко маркеров</a>
+                              <a class="nav-link" href="/color_detect">Определение цвета</a>
+                              <a class="nav-link" href="/size_detect">Определение площади контура</a>
+                              <a class="nav-link" href="/white_balance">Баланс белого</a>
+                              <a class="nav-link" href="/exposition">Настройки экспозиции</a>
+                              <a class="nav-link" href="/roundness">Определение округлости контура</a>
+                              <a class="nav-link" href="/detect_dist">Определение местоположения объекта</a>
+                              <a class="nav-link" href="/shape_classification">Определение фигур</a>
+                              <a class="nav-link" href="/line_detect">Определение линий</a>
+                              <a class="nav-link" href="/ssd">Распознование нейросетью</a>
+                              <a class="nav-link" href="/FPV">FPV - движение от первого лица</a>
+                              <a class="nav-link" href="/track">Слежение</a>
+
+{#                                  <svg class="bi" aria-hidden="true"><use xlink:href="#box-seam"></use></svg>#}
+                          </li>
+
+                          <li class="nav-item" style="padding-top: 24px">
+
+                              {# Если введены вручную параметры баланса белого #}
+                              <div class="d-flex align-items-center">
+                                  <div class="flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#198754" class="bi bi-circle-fill w-24" viewBox="0 0 16 16">
+                                    <circle cx="8" cy="8" r="8"/></svg>
+                                  </div>
+                                  <div class="flex-grow-1 ms-3">
+                                    Настройки экспозиции (ручная настройка)
+                                  </div>
+                              </div>
+{#                              <a class="nav-link d-flex align-items-center">#}
+{#                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#198754" class="bi bi-circle-fill w-24" viewBox="0 0 16 16">#}
+{#                                  <circle cx="8" cy="8" r="8"/></svg>#}
+{#                                  Настройки экспозиции (ручная настройка)#}
+{#                              </a>#}
+                              <div style="padding-top: 14px;padding-bottom: 20px">
+                                  {# Кнопку можно нажать, активная #}
+                                  
+                                  <button class="btn btn-outline-success" id="myButton" {{disabled}}>Сбросить ручную настройку</button>
+                              </div>
+                              {##}
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </nav>
+            </div>
+        </div>
+        <script>
+        let btn = document.getElementById("myButton");
+
+		// Update the slider value element when the slider is moved
+		btn.onclick = function () {
+			fetch("/update_variable", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: {
+              val: Math.random()
+            }
+            })
+		btn.disabled = "disabled"
+		};
+
+        </script>
+
+        <div class="header_page" style="text-align:center;position: relative;padding-top: 20px;background:#ffff;">
+            {% block header_1 %}
+            {% endblock %}
+        </div>
+
+        <div class="content_all" style="position: relative;left: 15%;background:#ffff;">
+
+            <div class="settings" style="position: absolute;width: 35%; height: 560px;background:#fffff;">
+                <div class="content_header_settings" style="text-align:center;padding-top: 80px;background:#cffff">
+                    {% block content_header_settings %}
+                    {% endblock %}
+{#                    <div class="content_settings_1" style="text-align:center;background:#ffff;">#}
+                        <div class="content_settings" style="text-align:left;padding-top: 40px;padding-left: 132px;background:#ffff;">
+                            {% block content_settings %}
+                            {% endblock %}
+                        </div>
+{#                    </div>#}
+                </div>
+            </div>
+
+            <div class="video" style="position: absolute;left: 40%;text-align:center;width: 35%; height: 560px;background:#ffff;">
+                <div class="content_header_video" style="text-align:center;padding-top: 80px;">
+                    {% block content_header_video %}
+                    {% endblock %}
+                </div>
+                <div class="content_video" style="padding-top: 40px;background:#ffff;">
+                    {% block content_video %}
+                    {% endblock %}
+                </div>
+            </div>
+
+        </div>
+
+        <div id="footer" class="fixed-bottom" style="position: fixed;background:#cec9c9">
+            <a style="padding-left: 40px;padding-bottom: 40px;">
+{#                &#xF7DB 2023 Machine vision made by Kristina Khakimova, Design & Front made by Guzel Karimova</a>#}
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-c-circle" viewBox="0 0 16 16">
+                <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8Zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0ZM8.146 4.992c-1.212 0-1.927.92-1.927 2.502v1.06c0 1.571.703 2.462 1.927 2.462.979 0 1.641-.586 1.729-1.418h1.295v.093c-.1 1.448-1.354 2.467-3.03 2.467-2.091 0-3.269-1.336-3.269-3.603V7.482c0-2.261 1.201-3.638 3.27-3.638 1.681 0 2.935 1.054 3.029 2.572v.088H9.875c-.088-.879-.768-1.512-1.729-1.512Z"/>
+            </svg>
+             2023 Machine vision made by Kristina Khakimova, Design & Front made by Guzel Karimova</a>
+        </div>
+
+        <script src="{{ url_for('static', filename='bootstrap.bundle.min.js')}}"></script>
+
+    </body>
+
+</html>

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Распознование нейросетью{% endblock %}
+
+{% block header_1 %}
+    <h1>Распознование нейросетью</h1>
+{% endblock %}
+
+{% block content_header_settings %}
+
+{% endblock %}
+
+{% block content_settings %}
+    <p>В этом режиме не предполагается настроек.</p>
+{% endblock %}
+
+{% block content_header_video %}
+
+{% endblock %}
+
+{% block content_video %}
+    <image src="{{ url_for('video_feed_ssd') }}" width="100%"></image>
+{#            url_for('video_feed_calibration')#}
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}Калибровка{% endblock %}
+
+{% block header_1 %}
+
+{% endblock %}
+
+{% block content_header_settings %}
+
+{% endblock %}
+
+{% block content_settings %}
+    <div class="container">
+
+        <div class="slider-container">
+			<div>
+				<p class="slider-title">Размытие</p>
+				<input type="range" min="0" max="100" value="{{val1}}" class="slider" name="slider1" id="slider1">
+				<p class="slider-value" id="slider1-value">{{val1}}</p>
+			</div>
+			<div>
+				<p class="slider-title">Шум</p>
+				<input type="range" min="0" max="10" value="{{val2}}" class="slider" name="slider2" id="slider2">
+				<p class="slider-value" id="slider2-value">{{val2}}</p>
+			</div>
+			<div>
+				<p class="slider-title">Острота</p>
+				<input type="range" min="0" max="15" value="{{val3}}" class="slider" name="slider3" id="slider3">
+				<p class="slider-value" id="slider3-value">{{val3}}</p>
+			</div>
+			<div>
+				<p class="slider-title">Баланс белого</p>
+				<input type="range" min="0" max="5" value="{{val4}}" class="slider" name="slider4" id="slider4">
+				<p class="slider-value" id="slider4-value">{{val4}}</p>
+			</div>
+		</div>
+
+	</div>
+	<!--<input id="submit-button" type="submit" name="Submit" value="Submit">
+    </form>-->
+
+	<script>
+		// Get the slider and its value element
+		let slider1 = document.getElementById("slider1");
+		let slider1Value = document.getElementById("slider1-value");
+
+		let slider2 = document.getElementById("slider2");
+		let slider2Value = document.getElementById("slider2-value");
+
+		let slider3 = document.getElementById("slider3");
+		let slider3Value = document.getElementById("slider3-value");
+
+		let slider4 = document.getElementById("slider4");
+		let slider4Value = document.getElementById("slider4-value");
+
+		// Update the slider value element when the slider is moved
+		slider1.addEventListener("input", function() {
+			slider1Value.innerHTML = this.value;
+			fetch("/exposition", {
+            method: "POST",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              blur: Number(this.value)
+            })
+            })
+		});
+
+		slider2.addEventListener("input", function() {
+			slider2Value.innerHTML = this.value;
+	    fetch("/exposition", {
+            method: "POST",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              sharp: Number(this.value)
+            })
+            })
+		});
+
+		slider3.addEventListener("input", function() {
+			slider3Value.innerHTML = this.value;
+		fetch("/exposition", {
+            method: "POST",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              noise: Number(this.value)
+            })
+            })
+		});
+
+		slider4.addEventListener("input", function() {
+			slider4Value.innerHTML = this.value;
+		fetch("/exposition", {
+            method: "POST",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              white_balance: Number(this.value)
+            })
+            })
+		});
+
+
+	</script>
+
+{% endblock %}
+
+{% block content_header_video %}
+
+{% endblock %}
+
+{% block content_video %}
+    <image src="{{ url_for('video_feed_exp') }}" width="100%"></image>
+{#            url_for('video_feed_calibration')#}
+{% endblock %}

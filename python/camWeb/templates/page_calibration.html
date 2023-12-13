@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Калибровка{% endblock %}
+
+{% block header_1 %}
+    <h1>Калибровка</h1>
+{% endblock %}
+
+{% block content_header_settings %}
+
+{% endblock %}
+
+{% block content_settings %}
+    <p>Для калибровки камера поднесите калибровочную шахматную доску </p>
+    <p>Распечатать ее можно <a href="{{ url_for('static', filename='/chessboard.pdf') }}">здесь</a><p>
+
+
+{% endblock %}
+
+{% block content_header_video %}
+
+{% endblock %}
+
+{% block content_video %}
+    <image src="{{ url_for('video_feed_calibration') }}" width="100%">
+{#            url_for('video_feed_calibration')#}
+{% endblock %}

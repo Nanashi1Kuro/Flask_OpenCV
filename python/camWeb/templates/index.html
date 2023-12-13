@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Главная{% endblock %}
+
+{% block header_1 %}
+    <h1>Главная</h1>
+{% endblock %}
+
+{% block content_header_settings %}
+
+{% endblock %}
+
+{% block content_settings %}
+    <p>Переключаясь между режимами, можно будет изменить параметры, и увидеть, что будет.</p>
+
+{% endblock %}
+
+{% block content_header_video %}
+
+{% endblock %}
+
+{% block content_video %}
+    <image src="{{ url_for('video_feed')}}" width="100%"></image>
+{#            url_for('video_feed')#}
+{% endblock %}

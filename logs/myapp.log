@@ -1,0 +1,46 @@
+Traceback (most recent call last):
+  File "/code/python/camWeb/appCam.py", line 12, in <module>
+    from shape_detection_gray import shape_call
+  File "/code/python/camWeb/shape_detection_gray.py", line 20, in <module>
+    csv = pd.read_csv('colors.csv', names=index, header=None)
+  File "/usr/lib/python3/dist-packages/pandas/io/parsers.py", line 685, in parser_f
+    return _read(filepath_or_buffer, kwds)
+  File "/usr/lib/python3/dist-packages/pandas/io/parsers.py", line 457, in _read
+    parser = TextFileReader(fp_or_buf, **kwds)
+  File "/usr/lib/python3/dist-packages/pandas/io/parsers.py", line 895, in __init__
+    self._make_engine(self.engine)
+  File "/usr/lib/python3/dist-packages/pandas/io/parsers.py", line 1135, in _make_engine
+    self._engine = CParserWrapper(self.f, **self.options)
+  File "/usr/lib/python3/dist-packages/pandas/io/parsers.py", line 1917, in __init__
+    self._reader = parsers.TextReader(src, **kwds)
+  File "pandas/_libs/parsers.pyx", line 382, in pandas._libs.parsers.TextReader.__cinit__
+  File "pandas/_libs/parsers.pyx", line 689, in pandas._libs.parsers.TextReader._setup_parser_source
+FileNotFoundError: [Errno 2] File b'colors.csv' does not exist: b'colors.csv'
+[ERROR:0@5.139] global persistence.cpp:512 open Can't open file: 'calibration_matrix.yaml' in read mode
+Traceback (most recent call last):
+  File "/code/python/camWeb/appCam.py", line 16, in <module>
+    from aruco_detect import detect
+  File "/code/python/camWeb/aruco_detect.py", line 18, in <module>
+    print("camera_matrix : ", camera_matrix.tolist())
+AttributeError: 'NoneType' object has no attribute 'tolist'
+[ERROR:0@5.257] global persistence.cpp:512 open Can't open file: 'calibration_matrix.yaml' in read mode
+Traceback (most recent call last):
+  File "/code/python/camWeb/appCam.py", line 20, in <module>
+    from ssd_mobilenet import ssd
+  File "/code/python/camWeb/ssd_mobilenet.py", line 7, in <module>
+    with open(classFile,"rt") as f:
+FileNotFoundError: [Errno 2] No such file or directory: './/Object_Detection_Files/coco.names'
+[ERROR:0@6.737] global persistence.cpp:512 open Can't open file: 'calibration_matrix.yaml' in read mode
+[ WARN:0@9.014] global cap_v4l.cpp:2060 getProperty VIDEOIO(V4L2:/dev/video0): Unable to get camera FPS
+ * Serving Flask app 'appCam'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://192.168.1.19:5050
+[33mPress CTRL+C to quit[0m
+192.168.1.17 - - [01/Aug/2023 22:52:02] "GET / HTTP/1.1" 200 -
+192.168.1.17 - - [01/Aug/2023 22:52:02] "GET /static/style.css HTTP/1.1" 200 -
+192.168.1.17 - - [01/Aug/2023 22:52:02] "GET /static/images/mes_logo.svg HTTP/1.1" 200 -
+192.168.1.17 - - [01/Aug/2023 22:52:03] "GET /video_feed HTTP/1.1" 200 -
+192.168.1.17 - - [01/Aug/2023 22:52:03] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
