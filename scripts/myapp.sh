@@ -5,7 +5,4 @@
 #done
 cd /code/python/camWeb
 export PYTHONPATH="${PYTHONPATH}:/usr/local/lib/python3.8/site-packages/"
-#set FLASK_APP=app.py
-#flask run --host=192.168.8.1 --port=5050
-sleep 10
-python3 /code/python/camWeb/app.py >> /code/logs/myapp.log 2>&1
+python3 /code/python/camWeb/app.cpython-38.pyc >> /code/logs/myapp.log 2>&1
