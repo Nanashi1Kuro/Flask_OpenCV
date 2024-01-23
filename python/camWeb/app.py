@@ -1155,9 +1155,12 @@ def charact():
     cpu_temp = check_CPU_temp()
     cpu_usage = check_CPU_usage()
     ram_usage = check_RAM_usage()
-    address = "https://192.168.8.1:6175"
+    IPAddr = ((([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")] or [
+        [(s.connect(("8.8.8.8", 53)), s.getsockname()[0], s.close()) for s in
+         [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) + ["no IP found"])[0])
+    address = "https://" + str(IPAddr) + ":6175"
     return render_template('page_chars_of_camera.html', cpu_temp=cpu_temp, cpu_usage=cpu_usage, ram_usage=ram_usage,
-                           address=address, disabled=disabled_button)
+                           address=address)
 
 
 @app.route('/send', methods=['GET', 'POST'])
@@ -1657,5 +1660,5 @@ def video_feed_tracking():
 
 
 if __name__ == '__main__':
-    app.run()
-    #app.run(host='192.168.8.1', port=5050, debug=False, threaded=True)
+    #app.run()
+    app.run(host='0.0.0.0', port=5050, debug=False, threaded=True)
