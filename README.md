@@ -19,8 +19,8 @@
 1. Клонируйте репозиторий:
 
     ```bash
-    git clone https://github.com/ваш-локальный-путь/flask-приложение.git
-    cd flask-приложение
+    git clone https://github.com/Nanashi1Kuro/Flask_OpenCV.git
+    cd Flask_OpenCV
     ```
 
 2. Установите зависимости:
